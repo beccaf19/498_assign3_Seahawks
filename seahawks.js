@@ -1,5 +1,5 @@
 var margin = {top: 20, right: 20, bottom: 30, left: 125};
-    var w = 960 - margin.left - margin.right;
+    var w = 1200 - margin.left - margin.right;
     var h = 500 - margin.top - margin.bottom;
 
 var dataset; //to hold full dataset
@@ -8,15 +8,13 @@ d3.csv("report.csv", function(error, seahawks) {
   //read in the data
   if (error) return console.warn(error);
      seahawks.forEach(function(d) {
-        d.date = +d.date;
         d.searchAmt = +d.searchAmt;
-        d.startDate = +d.startDate;
-        d.endDate = +d.endDate;
+        d.startDate = +getstartDate(d);
+        d.endDate = +getendDate(d);
      });
    dataset=seahawks;
    drawVis(dataset);
 });
-
 
 
 var col = d3.scale.category10();
@@ -42,13 +40,33 @@ var y = d3.scale.linear()
         .domain([0, 125])
         .range([h, 0]);
 
+
+
 function drawVis(data) {
+  // var lineFunc = d3.svg.line()
+  // .x (function(d) {
+  //   return xRange(d.startDate);
+  // })
+  // .y (function(d){
+  //   return yRange(d.searchAmt);
+  // })
+  // .interpolate('linear');
+
+  // var vis = d3.select("#visualisation");
+
+  // vis.append('svg:path')
+  //   .attr('d', lineFunc(lineData))
+  //   .attr('stroke', 'blue')
+  //   .attr('stroke-width', 2)
+  //   .attr('fill', 'none');
+
+
   var circles = svg.selectAll("circle")
    .data(data)
    .enter()
    .append("circle")
     .attr("cx", function(d) {
-      return x(d.startDate);  
+      return x(getstartDate(d));  
     })
     .attr("cy", function(d) { 
       return y(d.searchAmt);  
@@ -61,9 +79,17 @@ function drawVis(data) {
 }
 
 
+
+
+
+
 var xAxis = d3.svg.axis()
     .ticks(10)
     .scale(x);
+
+var yAxis = d3.svg.axis()
+    .scale(y)
+    .orient("left");
 
 svg.append("g")
     .attr("class", "axis")
@@ -75,9 +101,6 @@ svg.append("g")
       .style("text-anchor", "end")
       .text("Year");
 
-var yAxis = d3.svg.axis()
-    .scale(y)
-    .orient("left");
 
 svg.append("g")
    .attr("class", "axis")
@@ -88,5 +111,12 @@ svg.append("g")
       .style("text-anchor", "end")
       .text("Web Search Amount");
 
+function getstartDate(d) {
+  return new Date(d.startDate);
+}
+
+function getendDate(d) {
+  return new Date(d.endDate);
+}
 
 
