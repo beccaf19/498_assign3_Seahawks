@@ -29,6 +29,10 @@ var svg = d3.select("body").append("svg")
     .append("g")
     .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
+var tooltip = d3.select("body").append("div")
+  .attr("class", "tooltip")
+  .style("opacity", 0);
+
 var minDate = new Date(2005,01,02),
     maxDate = new Date(2015,05,02);
 
@@ -70,6 +74,19 @@ function drawVis(data) {
     })
     .attr("cy", function(d) { 
       return y(d.searchAmt);  
+    })
+    .on("mouseover", function(d) {
+      tooltip.transition()
+        .duration(200)
+        .style("opacity", 1);
+      tooltip.html("Report: "+ d.searchAmt + "\n Start: " d.startDate + "\n End: " + d.endDate)
+        .style("left", (d3.event.pageX + 5) + "px")
+        .style("top", (d3.event.pageY - 28) + "px");
+    })
+    .on("mouseout", function(d) {
+      tooltip.transition()
+        .duration(500)
+        .style("opacity", 0);
     })
     .attr("r", 4)
     .style("stroke", "black")
