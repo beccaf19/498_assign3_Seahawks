@@ -70,7 +70,7 @@ var yAxis = d3.svg.axis()
     .scale(y)
     .orient("left");
 
-// append axis elements
+// append axis elements and add labels
 svg.append("g")
     .attr("class", "axis")
     .attr("transform", "translate(0," + h + ")")
@@ -90,28 +90,6 @@ svg.append("g")
       .attr("dy", ".71em")
       .style("text-anchor", "end")
       .text("Web Search Amount");        
-
-
-// draw graph
-// function drawVis(data) {
-//   var circles = svg.selectAll("circle")
-//    .data(data)
-//    .enter()
-//    .append("circle")
-//     .attr("cx", function(d) {
-//       return x(getstartDate(d));  
-//     })
-//     .attr("cy", function(d) { 
-//       return y(d.searchAmt);  
-//     })
-//     .attr("r", 4)
-//     .style("stroke", "black")
-//      //.style("fill", function(d) { return colLightness(d.vol); })
-//      .style("fill", function(d) { return col(d.type); })
-//     .style("opacity", 0.5)
-// }
-
-
 
 
 //get date functions
