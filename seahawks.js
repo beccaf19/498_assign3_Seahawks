@@ -1,4 +1,4 @@
-var margin = {top: 20, right: 20, bottom: 30, left: 125};
+var margin = {top: 50, right: 20, bottom: 30, left: 125};
     var w = 1200 - margin.left - margin.right;
     var h = 500 - margin.top - margin.bottom;
 
@@ -28,16 +28,10 @@ d3.csv("report.csv", function(error, seahawks) {
   .attr('stroke', 'green')
   .attr('stroke-width', 2)
   .attr('fill', 'none');
-
-
-
 });
 
 
 var col = d3.scale.category10();
-
-
-
 
 //create SVG element for graph
 var svg = d3.select("body").append("svg")
@@ -102,5 +96,56 @@ function getstartDate(d) {
 function getendDate(d) {
   return new Date(d.endDate);
 }
+
+
+
+
+
+$(function() {
+  $("#date").slider({  
+    range: true,       
+    min:  2005,      
+    max: 2015,
+    values: [2005, 2015],
+    step: 5
+
+    // slide: function(event, ui) {
+    //   $("#date").val(ui.values[0] + " - " + ui.values[1]);
+    //    filterData("dates", ui.values);
+    // } 
+  });
+
+  $("#dateRange").val($("#date").slider("values", 0) +
+     " - " + $("#date").slider("values", 1));  
+});
+
+
+
+
+
+var attributes = ["date"]
+var ranges = [[2005, 2015]]
+
+function filterData(attr, values){
+  for (i = 0; i < attributes.length; i++){
+    if (attr == attributes[i]){       
+      ranges[i] = values;
+    }
+  }
+  var toVisualize = dataset.filter(function(d) { return isInRange(d)});
+  update(toVisualize);
+}
+
+function isInRange(datum){
+  for (i = 0; i < attributes.length; i++){
+    if (datum[attributes[i]] < ranges[i][0] || datum[attributes[i]] > ranges[i][1]){
+      return false;
+    }
+  }
+  return true;
+}
+
+
+
 
 
