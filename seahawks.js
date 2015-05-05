@@ -46,6 +46,9 @@ var svg = d3.select("body").append("svg")
     .append("g")
     .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
+var tooltip = d3.select("body").append("div")
+  .attr("class", "tooltip")
+  .style("opacity", 0);
 
 //x axis start and end dates
 var minDate = new Date(2005,01,02),
@@ -61,7 +64,6 @@ var y = d3.scale.linear()
         .domain([0, 125])
         .range([h, 0]);
 
-// create axis elemnents
 var xAxis = d3.svg.axis()
     .ticks(10)
     .scale(x);
