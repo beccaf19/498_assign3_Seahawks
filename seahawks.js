@@ -107,12 +107,11 @@ $(function() {
     min:  2005,      
     max: 2015,
     values: [2005, 2015],
-    step: 5
 
-    // slide: function(event, ui) {
-    //   $("#date").val(ui.values[0] + " - " + ui.values[1]);
-    //    filterData("dates", ui.values);
-    // } 
+    slide: function(event, ui) {
+      $("#date").val(ui.values[0] + " - " + ui.values[1]);
+       filterData("dates", ui.values);
+    } 
   });
 
   $("#dateRange").val($("#date").slider("values", 0) +
@@ -132,7 +131,9 @@ function filterData(attr, values){
       ranges[i] = values;
     }
   }
-  var toVisualize = dataset.filter(function(d) { return isInRange(d)});
+  var toVisualize = dataset.filter(function(d) { 
+    return isInRange(d)
+  });
   update(toVisualize);
 }
 

@@ -16,6 +16,10 @@ body {
   shape-rendering: crispEdges;
 }
 
+#dateRange {
+	width: 1000;
+}
+
 </style>
 
 
@@ -23,12 +27,21 @@ body {
 <script src="http://code.jquery.com/jquery-1.10.2.js"></script> 
 
 <script src="http://code.jquery.com/ui/1.11.1/jquery-ui.js"></script>
+ 
+<link href='http://ajax.googleapis.com/ajax/libs/jqueryui/1.8/themes/base/jquery-ui.css' rel='stylesheet' type='text/css'>
 
 
 <p>Date Range</p>            
-	<div id="date" ></div>    
-	<label for="dateRange">Date:</label>        
-    <input type="text" id="dateRange" readonly style="border:0; color:#f6931f; font-weight:bold;">
+	   
+	<label for="dateRange">Date:</label> 
+
+
+
+    <input type="text" id="dateRange" readonly style="border:0; color:#f6931f; font-weight:bold;" size='600'>
+
+    <div id="date" class"slider-range"></div> 
+
+   
 
 <script src="http://d3js.org/d3.v3.min.js"></script>
 
