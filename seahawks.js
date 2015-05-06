@@ -2,12 +2,12 @@
 
 var margin = {top: 50, right: 20, bottom: 50, left: 30};
     var w = 1200 - margin.left - margin.right;
-    var h = 500 - margin.top - margin.bottom;
+    var h = 600 - margin.top - margin.bottom;
 
 var dataset; //to hold full dataset
 
-var attributes = ["date"]
-var ranges = [[2005, 2015]]
+var attributes = ["date", "amount"]
+var ranges = [[2005, 2015], [0,125]]
 var svg;
 
 //x axis start and end dates
@@ -133,17 +133,14 @@ $(function() {
     slide: function(event, ui) {
       $("#dateRange").val(ui.values[0] + " - " + ui.values[1]);
        
-      var ticks = (ui.values[1] - ui.values[0]) + 1;
-      var newYear1 = new Date(ui.values[0], 00, 00);
-      var newYear2 = new Date(ui.values[1], 00, 00);
-
+      var newYear1 = new Date(ui.values[0], 00, 01);
+      var newYear2 = new Date(ui.values[1], 00, 01);
 
        x = d3.time.scale()
         .domain([newYear1, newYear2])
         .range([0, w]);
 
       xAxis = d3.svg.axis()
-      
           .scale(x)
           .orient("bottom"); 
 
@@ -156,30 +153,72 @@ $(function() {
 
   $("#dateRange").val($("#date").slider("values", 0) +    
           " - " + $("#date").slider("values", 1));
-    });
+  });
+
+$(function() {
+  $("#amount").slider({  
+    range: true,       
+    min:  0,      
+    max: 125,
+    values: [0, 125],
+
+    slide: function(event, ui) {
+      $("#searchAmount").val(ui.values[0] + " - " + ui.values[1]);
+    
+      svg.selectAll("*").remove();
+      filterData("amount", ui.values, minDate, maxDate);
+
+    }
+  });
+
+  $("#searchAmount").val($("#amount").slider("values", 0) +    
+          " - " + $("#amount").slider("values", 1));
+});
+
+
+
 
 
 
 function filterData(attr, values, newYear1, newYear2){
   for (i = 0; i < attributes.length; i++){
     if (attr == attributes[i]){       
-      ranges[i] = values[i];
+      ranges[i] = values;
     }
   }
-  var toVisualize = dataset.filter(function(d) { 
-     return isInRange(d, newYear1, newYear2)
+
+var toVisualize;
+
+  //filter by date
+  toVisualize = dataset.filter(function(d) { 
+     return isInDateRange(d, newYear1, newYear2)
+  });
+
+  //filter by amount
+  toVisualize = toVisualize.filter(function(d){
+      return isInRange(d)
   });
   drawVis(toVisualize);
 }
 
-function isInRange(datum, newYear1, newYear2){
-  for (i = 0; i < attributes.length; i++){
-    if (getstartDate(datum) < newYear1 || getstartDate(datum) > newYear2){
-      return false;
-    }
-  }
-  return true;
+  
+function isInDateRange(datum, newYear1, newYear2){
+      if (getstartDate(datum) < newYear1 || getstartDate(datum) > newYear2){
+        return false;
+      }
+      return true;
 }
+
+
+function isInRange(datum) {
+  if (datum.searchAmt < ranges[1][0] || datum.searchAmt > ranges[1][1]){      
+     return false;     
+  }   else {
+     return true;
+  }
+
+}
+
 
 
 
