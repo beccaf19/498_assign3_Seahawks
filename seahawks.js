@@ -1,6 +1,6 @@
 
 
-var margin = {top: 50, right: 20, bottom: 30, left: 125};
+var margin = {top: 50, right: 20, bottom: 50, left: 30};
     var w = 1200 - margin.left - margin.right;
     var h = 500 - margin.top - margin.bottom;
 
@@ -40,29 +40,15 @@ $(document).ready(function(){
     drawVis(dataset);
   });
 
-  // $('#dateRange').change(function(){
-  //   var value = $('#dateRange').val
-  //   var newYear = new Date(value, 01, 01);
-  //    filterData(dataset, newYear);
-
-  // });
-
 
 
 });
 
 
 
-
-
-
 function drawVis(data) {
-
- 
-
 //create axis elements
 var xAxis = d3.svg.axis()
-
     .scale(x);
 
 var yAxis = d3.svg.axis()
@@ -76,7 +62,7 @@ svg.append("g")
     .call(xAxis)
      .append("text")
       .attr("x", w)
-      .attr("y", -6)
+      .attr("y", 35)
       .style("text-anchor", "end")
       .text("Year");
 
@@ -85,7 +71,8 @@ svg.append("g")
    .attr("class", "axis")
    .call(yAxis)
       .append("text")
-      .attr("y", 6)
+      .attr("y",5 )
+      .attr("x", 115)
       .attr("dy", ".71em")
       .style("text-anchor", "end")
       .text("Web Search Amount");        
@@ -107,11 +94,6 @@ svg.append("g")
   .attr('fill', 'none');
 
 }
-
-
-
-
-var col = d3.scale.category10();
 
 
 var tooltip = d3.select("body").append("div")
@@ -175,8 +157,6 @@ $(function() {
   $("#dateRange").val($("#date").slider("values", 0) +    
           " - " + $("#date").slider("values", 1));
     });
-
-
 
 
 
