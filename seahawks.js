@@ -1,6 +1,6 @@
 
 
-var margin = {top: 50, right: 20, bottom: 50, left: 30};
+var margin = {top: 10, right: 20, bottom: 50, left: 30};
     var w = 1200 - margin.left - margin.right;
     var h = 600 - margin.top - margin.bottom;
 
@@ -75,7 +75,9 @@ svg.append("g")
       .attr("x", 115)
       .attr("dy", ".71em")
       .style("text-anchor", "end")
-      .text("Web Search Amount");        
+      .text("Web Search Amount");     
+
+
 
 
 //draw line
@@ -87,18 +89,41 @@ svg.append("g")
     return y(d.searchAmt);
   }); 
 
+
+  var div = d3.select("body").append("div")
+        .attr("class", "tooltip")
+        .style("opacity", 0);
+
   svg.append('svg:path')
   .attr('d', lineGen(data))
   .attr('stroke', 'green')
-  .attr('stroke-width', 2)
-  .attr('fill', 'none');
+  .attr('stroke-width', 3)
+  .attr('fill', 'none')
+  .on("mouseover", function(d){
+    var xCoor = d3.mouse(this)[0];
+    var yCoor = d3.mouse(this)[1];
+    var searchValue = y.invert(yCoor);
+    var xDate = x.invert(xCoor); 
 
+    div.transition()
+            .duration(200)
+            .style("opacity", .9);
+        div.html("Date = " + xDate  + " Search Amount = " + searchValue) 
+            .style("left", (d3.event.pageX) + "px")
+            .style("top", (d3.event.pageY - 28) + "px");
+
+
+  })
+  .on("mouseout", function(d) {          
+    div.transition()                
+      .duration(300)                
+      .style("opacity", 0);
+  })
 }
 
 
-var tooltip = d3.select("body").append("div")
-  .attr("class", "tooltip")
-  .style("opacity", 0);
+
+
 
 
 // set axis scales
@@ -119,7 +144,6 @@ function getstartDate(d) {
 function getendDate(d) {
   return new Date(d.endDate);
 }
-
 
 
 
