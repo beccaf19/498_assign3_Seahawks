@@ -13,8 +13,13 @@ d3.csv("report.csv", function(error, seahawks) {
         d.endDate = +getendDate(d);
      });
    dataset=seahawks;
+   drawVis(dataset);
+
+  
+});
 
 
+function drawVis(data) {
   var lineGen = d3.svg.line()
   .x(function(d) {
     return x(d.startDate);
@@ -28,7 +33,10 @@ d3.csv("report.csv", function(error, seahawks) {
   .attr('stroke', 'green')
   .attr('stroke-width', 2)
   .attr('fill', 'none');
-});
+
+}
+
+
 
 
 var col = d3.scale.category10();
@@ -98,9 +106,6 @@ function getendDate(d) {
 }
 
 
-
-
-
 $(function() {
   $("#date").slider({  
     range: true,       
@@ -109,17 +114,14 @@ $(function() {
     values: [2005, 2015],
 
     slide: function(event, ui) {
-      $("#date").val(ui.values[0] + " - " + ui.values[1]);
-       filterData("dates", ui.values);
+      $("#dateRange").val(ui.values[0] + " - " + ui.values[1]);
+       filterData("date", ui.values);
     } 
   });
 
   $("#dateRange").val($("#date").slider("values", 0) +
      " - " + $("#date").slider("values", 1));  
 });
-
-
-
 
 
 var attributes = ["date"]
@@ -134,7 +136,7 @@ function filterData(attr, values){
   var toVisualize = dataset.filter(function(d) { 
     return isInRange(d)
   });
-  update(toVisualize);
+  drawVis(toVisualize);
 }
 
 function isInRange(datum){
@@ -145,6 +147,8 @@ function isInRange(datum){
   }
   return true;
 }
+
+
 
 
 
